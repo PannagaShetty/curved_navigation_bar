@@ -7,6 +7,8 @@ typedef _LetIndexPage = bool Function(int value);
 
 class CurvedNavigationBar extends StatefulWidget {
   final List<Widget> items;
+  final List<Widget> itemsSelected;
+  final List<String> itemsName;
   final int index;
   final Color color;
   final Color buttonBackgroundColor;
@@ -20,6 +22,8 @@ class CurvedNavigationBar extends StatefulWidget {
   CurvedNavigationBar({
     Key key,
     @required this.items,
+    @required this.itemsName,
+    @required this.itemsSelected,
     this.index = 0,
     this.color = Colors.white,
     this.buttonBackgroundColor,
@@ -53,7 +57,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
   @override
   void initState() {
     super.initState();
-    _icon = widget.items[widget.index];
+    _icon = widget.itemsSelected[widget.index];
     _length = widget.items.length;
     _pos = widget.index / _length;
     _startingPos = widget.index / _length;
@@ -64,7 +68,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
         final endingPos = _endingIndex / widget.items.length;
         final middle = (endingPos + _startingPos) / 2;
         if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
-          _icon = widget.items[_endingIndex];
+          _icon = widget.itemsSelected[_endingIndex];
         }
         _buttonHide =
             (1 - ((middle - _pos) / (_startingPos - middle)).abs()).abs();
@@ -118,10 +122,26 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                 child: Material(
                   color: widget.buttonBackgroundColor ?? widget.color,
                   type: MaterialType.circle,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _icon,
-                  ),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                            color: widget.buttonBackgroundColor ?? widget.color,
+                            width: 5),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [0.05, 1],
+                          colors: [
+                            Color(0xFFF96289),
+                            Color(0xFF3F5EFB),
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _icon,
+                      )),
                 ),
               ),
             ),
@@ -152,6 +172,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                     length: _length,
                     index: widget.items.indexOf(item),
                     child: Center(child: item),
+                    title: widget.itemsName[widget.items.indexOf(item)],
                   );
                 }).toList())),
           ),

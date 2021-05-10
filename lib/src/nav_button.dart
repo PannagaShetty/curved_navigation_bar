@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
 class NavButton extends StatelessWidget {
+  final String title;
   final double position;
   final int length;
   final int index;
   final ValueChanged<int> onTap;
   final Widget child;
 
-  NavButton({this.onTap, this.position, this.length, this.index, this.child});
+  NavButton(
+      {this.onTap,
+      this.position,
+      this.length,
+      this.index,
+      this.child,
+      this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,22 @@ class NavButton extends StatelessWidget {
                   0, difference < 1.0 / length ? verticalAlignment * 40 : 0),
               child: Opacity(
                   opacity: difference < 1.0 / length * 0.99 ? opacity : 1.0,
-                  child: child),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      child,
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff313D56)),
+                      )
+                    ],
+                  )),
             )),
       ),
     );
