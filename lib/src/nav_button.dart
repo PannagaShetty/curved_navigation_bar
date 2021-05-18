@@ -45,7 +45,7 @@ class NavButton extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff313D56)),
                       )
